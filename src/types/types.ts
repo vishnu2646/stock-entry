@@ -36,7 +36,7 @@ export interface IStockData {
     StockQty: String;
     storeloc: String;
     Mcno: String;
-    username: String;
+    User: String;
     StockDAte: String;
     Remarks: String;
 }

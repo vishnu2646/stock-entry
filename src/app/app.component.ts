@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
         StockQty: '',
         storeloc: '',
         Mcno: '',
-        username: '',
+        User: '',
         StockDAte: new Date().toDateString(),
         Remarks: '',
     }
@@ -115,7 +115,7 @@ export class AppComponent implements OnInit {
             alert("Please all the fields to save the stock");
         } else {
             this.stockData['StockDAte'] = moment(new Date(this.stockData['StockDAte'].toString())).format("YYYY-MM-DD");
-            this.stockData['username'] = "Raja";
+            this.stockData['User'] = "Raja";
             const { Item_desc1, ...filteredObj } = this.stockData;
             try {
                 const response = await lastValueFrom(this.apiService.addGetSaveData(filteredObj));

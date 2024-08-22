@@ -1,7 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { IGenvaluejs, Ioptions, IStocks } from '../types/types';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { IGenvaluejs, Ioptions, IStockData, IStocks } from '../types/types';
 import { ApiService } from './service/api.service';
 import moment from 'moment';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -17,19 +18,17 @@ export class AppComponent implements OnInit {
 
     public loading: boolean = false;
 
-    public stockData: IGenvaluejs = {
+    public selectedItemId: String = "";
+
+    public stockData: IStockData = {
+        Itemid: '',
         Item_desc1: '',
-        Item_no: '',
-        Itemid: 0,
-        Mcno: 0,
-        Rate: 0,
-        Remarks: '',
-        StockDAte: new Date().toDateString(),
-        StockQty: 0,
-        StoreLoc: '',
-        Uom: '',
+        StockQty: '',
+        storeloc: '',
+        Mcno: '',
         User: '',
-        materialtype: '',
+        StockDAte: new Date().toDateString(),
+        Remarks: '',
     }
 
     public extractData: Ioptions[] = [];
@@ -38,9 +37,13 @@ export class AppComponent implements OnInit {
 
     public selectedItem: any = {};
 
-    public selectedItemId: String = "";
-
     public data: IGenvaluejs[] = [];
+
+    @ViewChild('partDesc', { static: false })
+    public partDesc: ElementRef | undefined;
+
+    @ViewChild('stockId', { static: false })
+    public stockId: ElementRef | undefined;
 
     public ngOnInit(): void {
         this.getStocksData();
@@ -80,14 +83,30 @@ export class AppComponent implements OnInit {
         this.filteredOptions = result;
     }
 
-    public getItemId(event: any) {
-        const selectedItem = event; // This holds the selected item
-        console.log(selectedItem);
+    public lostFocus(event: any): void {
+        console.log(event.target.value);
+    }
+
+    public getItemId(event: AtoCompleteSelectEvent) {
+        const selectedItem = event.value;
+
+        this.selectedItemId = selectedItem;
+
+        const partDescElement = this.partDesc?.nativeElement;
+
+        this.data.forEach(obj => {
+            if(obj.Item_no === selectedItem) {
+                partDescElement.value = obj.Item_desc1;
+                this.stockData.Item_desc1 = obj.Item_desc1;
+                this.stockData.Itemid = obj.Itemid.toString();
+                console.log(this.stockData);
+            }
+        });
     }
 
     public async saveStocks() {
         if (!this.stockData['Item_desc1'] || 
-            !this.stockData['Item_no'] ||
+            !this.stockData['Itemid'] ||
             !this.stockData['Mcno'] ||
             !this.stockData['Remarks'] || 
             !this.stockData['StockDAte'] || 
@@ -96,9 +115,11 @@ export class AppComponent implements OnInit {
             alert("Please all the fields to save the stock");
         } else {
             this.stockData['StockDAte'] = moment(new Date(this.stockData['StockDAte'].toString())).format("YYYY-MM-DD");
-            console.log(this.stockData);
+            this.stockData['User'] = "Raja";
+            const { Item_desc1, ...filteredObj } = this.stockData;
             try {
-                await this.apiService.addGetSaveData(this.stockData);
+                const response = await lastValueFrom(this.apiService.addGetSaveData(filteredObj));
+                console.log(response);
             } catch (error) {
                 console.log("something went wrong",error);
             }
@@ -109,4 +130,9 @@ export class AppComponent implements OnInit {
 interface AutoCompleteCompleteEvent {
     originalEvent: Event;
     query: string;
+}
+
+interface AtoCompleteSelectEvent { 
+    originalEvent: PointerEvent;
+    value: String;
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IGetSaveData } from '../../types/types';
+import { IGetSaveData, IStockData } from '../../types/types';
 
 @Injectable({
     providedIn: 'root'
@@ -16,8 +16,8 @@ export class ApiService {
         return this.http.get(this.baseUrl);
     }
 
-    public addGetSaveData(data: IGetSaveData): Observable<IGetSaveData> {
+    public addGetSaveData(data: any): Observable<any> {
         console.log(data);
-        return this.http.post(this.baseUrl, data) as Observable<IGetSaveData>;
+        return this.http.post(this.baseUrl, data);
     }
 }

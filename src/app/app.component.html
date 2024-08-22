@@ -13,12 +13,13 @@
                     (completeMethod)="searchItemId($event)"
                     [virtualScroll]="true"
                     [virtualScrollItemSize]="30"
-                    (onSelect)="getItemId($event)"
+                    (onSelect)="getItemId($any($event))"
+                    (onBlur)="lostFocus($event)"
                 />
                 <label for="Item_no">Item No</label>
             </p-floatLabel>
             <p-floatLabel>
-                <input type="text" pInputText id="Item_desc1" [(ngModel)]="stockData.Item_desc1"/>
+                <input type="text" pInputText id="Item_desc1" #partDesc [(ngModel)]="stockData.Item_desc1"  (ngModelChange)="stockData.Item_desc1"/>
                 <label for="Item_desc1" >Part Description</label>
             </p-floatLabel>
             <div class="calender-field">
@@ -38,6 +39,10 @@
             <p-floatLabel>
                 <input type="text" pInputText id="stockQuantity" [(ngModel)]="stockData.StockQty"/>
                 <label for="stockQuantity" >Stock Quantity</label>
+            </p-floatLabel>
+            <p-floatLabel>
+                <input type="text" pInputText id="storeLoc" [(ngModel)]="stockData.storeloc"/>
+                <label for="storeLoc" >Store Location</label>
             </p-floatLabel>
             <p-floatLabel>
                 <input type="text" pInputText id="remarks" [(ngModel)]="stockData.Remarks"/>

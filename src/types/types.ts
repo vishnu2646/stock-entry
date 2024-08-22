@@ -1,7 +1,7 @@
 
 
 export interface IGenvaluejs {
-    Itemid?: number;
+    Itemid: string;
     Item_desc1: String;
     Rate: number;
     StoreLoc: String;
@@ -12,11 +12,11 @@ export interface IGenvaluejs {
     User: String;
     StockDAte: String;
     Remarks: String;
-    Item_no: number | String;
+    Item_no: String;
 }
 
 export interface IGetSaveData {
-    Itemid?: number;
+    Itemid?: string;
     Item_desc1: String;
     Rate: number;
     StoreLoc: String;
@@ -27,7 +27,18 @@ export interface IGetSaveData {
     User: String;
     StockDAte: String;
     Remarks: String;
-    Item_no: number | String;
+    Item_no: String;
+}
+
+export interface IStockData {
+    Itemid: String;
+    Item_desc1: String;
+    StockQty: String;
+    storeloc: String;
+    Mcno: String;
+    username: String;
+    StockDAte: String;
+    Remarks: String;
 }
 
 export interface IStocks {

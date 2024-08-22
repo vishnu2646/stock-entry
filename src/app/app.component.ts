@@ -4,6 +4,7 @@ import { ApiService } from './service/api.service';
 import moment from 'moment';
 import { lastValueFrom } from 'rxjs';
 import { ExportService } from './service/export.service';
+import { Message, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-root',
@@ -11,18 +12,41 @@ import { ExportService } from './service/export.service';
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+    /**
+     * Service instance to get the api data.
+     */
     private apiService = inject(ApiService);
 
+    /**
+     * Service instance to export the data.
+     */
     private exportService = inject(ExportService);
 
-    public title = 'stockentry';
+    private messageService = inject(MessageService);
 
+    /**
+     * Title to display.
+     */
+    public title = 'Stock Entry';
+
+    /**
+     * Columns title for the export data.
+     */
     public columns: any[] = [];
 
+    /**
+     * Loading state for the Api data in table.
+     */
     public loading: boolean = false;
 
+    /**
+     * Seleted Stock item id / name
+     */
     public selectedItemId: String = "";
 
+    /**
+     * Initial state for the stock item.
+     */
     public stockData: IStockData = {
         Itemid: '',
         Item_desc1: '',
@@ -34,18 +58,39 @@ export class AppComponent implements OnInit {
         Remarks: '',
     }
 
+    /**
+     * Data to be populated for the form.
+     */
     public extractData: Ioptions[] = [];
 
-    public exportColumns: any[] = [];
+    /**
+     * Columns to be exported.
+     */
+    public exportColumns: IExport[] = [];
 
+    /**
+     * List of option for the AutoComplete field.
+     */
     public filteredOptions: String[] = [];
 
-    public selectedItem: any = {};
+    public message: Message[] = [];
 
+    /**
+     * GenValueJs data.
+     * Used for the data population process in form fields.
+     */
     public data: IGenvaluejs[] = [];
 
+    /**
+     * List of GetSaveData to be displayed for the user in table/grid.
+     */
     public displayData: IGetSaveData[] = [];
 
+    /**
+     * A callback method that is invoked immediately after the default 
+     * change detector has checked the directive's data-bound properties for the first time,
+     * and before any of the view or content children have been checked.
+     */
     public ngOnInit(): void {
 
         this.getStocksData();
@@ -65,6 +110,10 @@ export class AppComponent implements OnInit {
         }));
     }
 
+    /**
+     * Method to fetch data from the database/server
+     * Using apiService.
+     */
     public async getStocksData() {
         try {
             this.loading = true;
@@ -87,7 +136,11 @@ export class AppComponent implements OnInit {
         }
     }
 
-    public searchItemId(event: AutoCompleteCompleteEvent) {
+    /**
+     * Method to get the option in autocomplete dropdown based on the text typed. 
+     * @param event Text typed in the autocomplete field.
+     */
+    public getFilterOptions(event: AutoCompleteCompleteEvent) {
         let query = event.query;
         let result: String[] = [];
 
@@ -97,10 +150,15 @@ export class AppComponent implements OnInit {
                 result.push(item['Item_no'].toString()); 
             }
         }
+
         this.filteredOptions = result;
     }
 
-    public getItemId(event: AtoCompleteSelectEvent) {
+    /**
+     * Method to populate value for the part desctiption (i.e) stockData.Item_desc1.
+     * @param event Selected option/data item in AutoComplete field or item_no field.
+     */
+    public getPartDesc(event: AtoCompleteSelectEvent) {
         const selectedItem = event.value;
 
         this.selectedItemId = selectedItem;
@@ -109,11 +167,14 @@ export class AppComponent implements OnInit {
             if(obj.Item_no === selectedItem) {
                 this.stockData.Item_desc1 = obj.Item_desc1;
                 this.stockData.Itemid = obj.Itemid.toString();
-                console.log(this.stockData);
             }
         });
     }
 
+    /**
+     * Method that validates the fields value in form and 
+     * Adds the stock data to the server using the apiService.
+     */
     public async saveStocks() {
         if (!this.stockData['Item_desc1'] || 
             !this.stockData['Itemid'] ||
@@ -129,24 +190,65 @@ export class AppComponent implements OnInit {
             const { Item_desc1, ...filteredObj } = this.stockData;
             try {
                 const response = await lastValueFrom(this.apiService.addGetSaveData(filteredObj));
-                console.log(response);
+                if(response.toString() === "Stock entry inserted successfully.") { 
+                    alert(response);
+                } else {
+                    alert("something went wrong");
+                }
+                this.resetStockData();
             } catch (error) {
                 console.log("something went wrong",error);
+                this.message.push({ severity: 'error', summary: 'Error', detail: 'something went wrong' })
             }
         }
     }
 
+    /**
+     * Reset the stock data to the default state or initial state.
+     */
+    private resetStockData() {
+        this.stockData = {
+            Itemid: '',
+            Item_desc1: '',
+            StockQty: '',
+            storeloc: '',
+            Mcno: '',
+            User: '',
+            StockDAte: new Date().toDateString(),
+            Remarks: '',
+        }
+        this.selectedItemId = '';
+    }
+
+    /**
+     * Method to export the data in the gird or table,
+     * Using exportService Method.
+     */
     public exportData() {
         this.exportService.exportExcel(this.displayData, "products");
     }
 }
 
+/**
+ * Type for the autocomplete complete event.
+ */
 interface AutoCompleteCompleteEvent {
     originalEvent: Event;
     query: string;
 }
 
+/**
+ * Type for the autoComplete Select event.
+ */
 interface AtoCompleteSelectEvent { 
     originalEvent: PointerEvent;
     value: String;
+}
+
+/**
+ * Type for columns.
+ */
+interface IExport {
+    title: String, 
+    dataKey: String
 }

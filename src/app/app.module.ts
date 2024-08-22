@@ -15,6 +15,9 @@ import { TableModule } from 'primeng/table';
 import { HttpClientModule } from '@angular/common/http';
 import { DropdownModule } from 'primeng/dropdown';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MessagesModule } from 'primeng/messages';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
     declarations: [
@@ -33,9 +36,13 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
         CalendarModule,
         TableModule,
         DropdownModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        MessagesModule,
+        ToastModule,
     ],
-    providers: [],
+    providers: [
+        MessageService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -6,8 +6,11 @@ import moment from 'moment';
 })
 export class ExportService {
 
-  constructor() { }
-
+    /**
+     * Method to export data.
+     * @param data data to export.
+     * @param fileName File name to export
+     */    
     public exportExcel(data: any[], fileName: string) {
         import("xlsx").then(xlsx => {
             const worksheet = xlsx.utils.json_to_sheet(data);
@@ -20,6 +23,11 @@ export class ExportService {
         });
     }
 
+    /**
+     * Method to save data to a file.
+     * @param buffer any.
+     * @param fileName File name to export.
+     */
     public saveAsExcelFile(buffer: any, fileName: string): void {
         const date = moment(new Date()).format('MMMM Do YYYY, h:mm:ss a');
         import("file-saver").then(FileSaver => {

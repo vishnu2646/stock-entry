@@ -1,8 +1,9 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { IGenvaluejs, Ioptions, IStockData, IStocks } from '../types/types';
+import { IGenvaluejs, IGetSaveData, Ioptions, IStockData, IStocks } from '../types/types';
 import { ApiService } from './service/api.service';
 import moment from 'moment';
 import { lastValueFrom } from 'rxjs';
+import { ExportService } from './service/export.service';
 
 @Component({
     selector: 'app-root',
@@ -12,9 +13,11 @@ import { lastValueFrom } from 'rxjs';
 export class AppComponent implements OnInit {
     private apiService = inject(ApiService);
 
+    private exportService = inject(ExportService);
+
     public title = 'stockentry';
 
-    public date: any = "";
+    public columns: any[] = [];
 
     public loading: boolean = false;
 
@@ -33,20 +36,33 @@ export class AppComponent implements OnInit {
 
     public extractData: Ioptions[] = [];
 
+    public exportColumns: any[] = [];
+
     public filteredOptions: String[] = [];
 
     public selectedItem: any = {};
 
     public data: IGenvaluejs[] = [];
 
-    @ViewChild('partDesc', { static: false })
-    public partDesc: ElementRef | undefined;
-
-    @ViewChild('stockId', { static: false })
-    public stockId: ElementRef | undefined;
+    public displayData: IGetSaveData[] = [];
 
     public ngOnInit(): void {
+
         this.getStocksData();
+
+        this.columns = [
+            { field: 'Item_no', header: 'Item No', customExportHeader: 'Item No' }, 
+            { field: 'Item_desc1', header: 'Part Desc', customExportHeader: 'Part Desc' }, 
+            { field: 'Mcno', header: 'Mcno', customExportHeader: 'Mcno' }, 
+            { field: 'StockDAte', header: 'Stock Date', customExportHeader: 'Stock Date' }, 
+            { field: 'StockQty', header: 'Stock Quantity', customExportHeader: 'Stock Quantity' }, 
+            { field: 'Remarks', header: 'Remarks', customExportHeader: 'Remarks' }, 
+        ]
+
+        this.exportColumns = this.columns.map(col => ({
+            title: col.header,
+            dataKey: col.field
+        }));
     }
 
     public async getStocksData() {
@@ -55,6 +71,7 @@ export class AppComponent implements OnInit {
             await this.apiService.getStocksData().subscribe(data => {
                 if (data) {
                     this.data = data['Genvaluejs'];
+                    this.displayData = data['GetSaveData'];
                     this.extractData = this.data.map(item => ({
                         Itemid: item.Itemid,
                         Item_desc1: item.Item_desc1,
@@ -83,20 +100,13 @@ export class AppComponent implements OnInit {
         this.filteredOptions = result;
     }
 
-    public lostFocus(event: any): void {
-        console.log(event.target.value);
-    }
-
     public getItemId(event: AtoCompleteSelectEvent) {
         const selectedItem = event.value;
 
         this.selectedItemId = selectedItem;
 
-        const partDescElement = this.partDesc?.nativeElement;
-
         this.data.forEach(obj => {
             if(obj.Item_no === selectedItem) {
-                partDescElement.value = obj.Item_desc1;
                 this.stockData.Item_desc1 = obj.Item_desc1;
                 this.stockData.Itemid = obj.Itemid.toString();
                 console.log(this.stockData);
@@ -124,6 +134,10 @@ export class AppComponent implements OnInit {
                 console.log("something went wrong",error);
             }
         }
+    }
+
+    public exportData() {
+        this.exportService.exportExcel(this.displayData, "products");
     }
 }
 

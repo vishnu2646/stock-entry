@@ -14,12 +14,11 @@
                     [virtualScroll]="true"
                     [virtualScrollItemSize]="30"
                     (onSelect)="getItemId($any($event))"
-                    (onBlur)="lostFocus($event)"
                 />
                 <label for="Item_no">Item No</label>
             </p-floatLabel>
             <p-floatLabel>
-                <input type="text" pInputText id="Item_desc1" #partDesc [(ngModel)]="stockData.Item_desc1"  (ngModelChange)="stockData.Item_desc1"/>
+                <input type="text" pInputText id="Item_desc1" [(ngModel)]="stockData.Item_desc1"  (ngModelChange)="stockData.Item_desc1"/>
                 <label for="Item_desc1" >Part Description</label>
             </p-floatLabel>
             <div class="calender-field">
@@ -58,9 +57,8 @@
 <!-- table -->
 <div class="table-responsive">
     <p-table
-        #stocks
         styleClass="p-datatable-gridlines" 
-        [value]="data"
+        [value]="displayData"
         dataKey="Itemid"
         [resizableColumns]="true"
         columnResizeMode="expand"
@@ -69,12 +67,15 @@
         [rows]="10"
         [rowsPerPageOptions]="[5, 10, 20]"
         [loading]="loading"
+        [exportHeader]="'customExportHeader'"
     >
         <ng-template pTemplate="caption">
             <div style="text-align: left">
                 <p-button 
                     icon="pi pi-external-link" 
-                    label="Export" />
+                    label="Export"
+                    (onClick)="exportData()"
+                />
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -88,7 +89,7 @@
                     <p-sortIcon field="Item_desc1" />
                 </th>
                 <th pSortableColumn="Mcno" pResizableColumn>
-                    McN
+                    Mcno
                     <p-sortIcon field="Mcno" />
                 </th>
                 <th pSortableColumn="StockDAte" pResizableColumn>
@@ -104,11 +105,31 @@
                     <p-sortIcon field="Remarks" />
                 </th>
             </tr>
+            <tr>
+                <th>
+                    <p-columnFilter type="text" field="Item_no" [showClearButton]="false" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="Item_desc1" [showClearButton]="false" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="Mcno" [showClearButton]="false" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="StockDAte" [showClearButton]="false" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="StockQty" [showClearButton]="false" />
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="Remarks" [showClearButton]="false" />
+                </th>
+            </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
             <tr>
                 <td>
-                    {{item.Itemid}}
+                    {{item.Item_no}}
                 </td>
                 <td class="text-truncate" style="max-width: 100px;">
                     {{item.Item_desc1}}
@@ -117,7 +138,7 @@
                     {{item.Mcno}}
                 </td>
                 <td>
-                    {{item.StockDAte | date: 'short'}}    
+                    {{item.StockDAte }}    
                 </td>
                 <td>
                     {{item.StockQty}}

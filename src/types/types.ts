@@ -40,13 +40,8 @@ export interface IStockData {
     Item_no: String;
 }
 
-export interface IStocks {
-    genvaluejs: IGenvaluejs[];
-    getSaveData: IGetSaveData[];
-}
-
 export interface Ioptions {
-    Itemid: any
-    Item_desc1: any
-    Item_no: any
+    Itemid: any;
+    Item_desc1: any;
+    Item_no: any;
 }

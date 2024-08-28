@@ -89,7 +89,7 @@
 </div>
 
 <!-- dialog -->
-<p-dialog header="Warning" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+<!-- <p-dialog header="Warning" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
     <div class="dialog-content">
         <span class="p-text-secondary block mb-5">Selcted Stock Item or Part Description is Already avalible.</span> <br>
         <span class="p-text-secondary block mb-5">Are you sure want to continue?.</span>
@@ -99,6 +99,18 @@
         <p-button label="No" severity="secondary" (onClick)="toggleDialog(false)" />
         <p-button label="Yes" (onClick)="toggleDialog(true)" />
     </div>
-</p-dialog>
+</p-dialog> -->
+
+<app-dialog [visible]="visible" [showActions]="true">
+    <div class="dialog-content">
+        <span class="p-text-secondary block mb-5">Selcted Stock Item or Part Description is Already avalible.</span> <br>
+        <span class="p-text-secondary block mb-5">Are you sure want to continue?.</span>
+    </div>
+    
+    <div class="dialog-actions">
+        <p-button label="No" severity="secondary" (onClick)="toggleDialog(false)" />
+        <p-button label="Yes" (onClick)="toggleDialog(true)" />
+    </div>
+</app-dialog>
 
 <!-- 192.168.1.44:9003 -->

@@ -1,0 +1,4 @@
+<p-dialog header="Confirmation" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <ng-content select=".dialog-content"></ng-content>
+    <ng-content select=".dialog-actions" *ngIf="showActions"></ng-content>
+</p-dialog>

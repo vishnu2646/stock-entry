@@ -23,3 +23,13 @@
         <button type="submit" (click)="handleLogin()">Login</button>
     </div>
 </div>
+
+<!-- Error dialog -->
+<app-dialog [visible]="visible" [showActions]="true">
+    <div class="dialog-content">
+        <span class="p-text-secondary block">{{ loginErrorMessage }}</span>
+    </div>
+    <div class="dialog-actions">
+        <p-button label="Close" severity="secondary" (onClick)="visible=false" />
+    </div>
+</app-dialog>

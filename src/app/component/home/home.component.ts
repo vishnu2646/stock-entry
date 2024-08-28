@@ -134,29 +134,30 @@ export class HomeComponent implements OnInit {
     public async getStocksData() {
         try {
             this.loading = true;
-            await this.apiService.getStocksData(this.userName, this.key).subscribe(data => {
-                if (data) {
-                    this.data = data['Genvaluejs']['Table'];
-                    this.extractData = this.data.map(item => ({
-                        Itemid: item.Itemid,
-                        Item_desc1: item.Item_desc1,
-                        Item_no: item.Item_no
-                    }));
-                    this.loading = false;
-                } else {
-                    console.log("Error on Fetching");
-                    this.loading = false;
-                }
-            });
+            
+            const data = await lastValueFrom(this.apiService.getStocksData(this.userName, this.key))
 
-            await this.apiService.getStocksDisplayData(this.userName, this.key).subscribe(data => {
-                if(data) {
-                    this.displayData = data.SaveGenData.Table;
-                } else {
-                    console.log("Error on Fetching");
-                    this.loading = false;
-                }
-            });
+            if (data) {
+                this.data = data['Genvaluejs']['Table'];
+                this.extractData = this.data.map(item => ({
+                    Itemid: item.Itemid,
+                    Item_desc1: item.Item_desc1,
+                    Item_no: item.Item_no
+                }));
+                this.loading = false;
+            } else {
+                console.log("Error on Fetching");
+                this.loading = false;
+            }
+
+            const displayData =  await lastValueFrom(this.apiService.getStocksDisplayData(this.userName, this.key));
+
+            if(displayData) {
+                this.displayData = displayData.SaveGenData.Table;
+            } else {
+                console.log("Error on Fetching");
+                this.loading = false;
+            }
         } catch(error) {
             console.error("Error on Fetching",error);
             this.loading = false;

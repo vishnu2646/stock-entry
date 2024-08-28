@@ -1,0 +1,104 @@
+
+<!-- forms -->
+<section class="stock-entry-section">
+    <div class="stock-entry-header">
+        <h4>Stock Entry Form</h4>
+        <h5 class="title poppins-medium" [routerLink]="'/details'" routerLinkActive="true">View Details</h5>
+    </div>
+    <p-card>
+        <div class="form-fields">
+            <div>
+                <label for="Item_no">Item No</label> <br>
+                <p-autoComplete 
+                    [(ngModel)]="stockData.Item_no"
+                    [suggestions]="filteredOptions"
+                    (completeMethod)="getFilterOptions($event)"
+                    [virtualScroll]="true"
+                    [virtualScrollItemSize]="30"
+                    (onSelect)="getPartDesc($any($event))"
+                    placeholder="Enter Item Number"
+                />
+            </div>
+            <div>
+                <label for="Item_desc1">Part Description</label> <br>
+                <p-autoComplete 
+                    [(ngModel)]="stockData.Item_desc1"
+                    [suggestions]="filteredItemDescription"
+                    (completeMethod)="getFilterPartDescOptions($event)"
+                    [virtualScroll]="true"
+                    [virtualScrollItemSize]="30"
+                    (onSelect)="getItemId($any($event))"
+                    placeholder="Enter Part Description"
+                />
+            </div>
+            <div>
+                <label for="mcNo">McNo</label> <br>
+                <input type="text" pInputText id="mcNo" maxlength="10" placeholder="Enter McNo" [(ngModel)]="stockData.Mcno"/>
+            </div>
+            <div>
+                <label for="stockQuantity">Stock Quantity</label> <br>
+                <p-inputNumber inputId="integeronly" id="stockQuantity" [(ngModel)]="stockData.StockQty" maxFractionDigits="3" />
+            </div>
+            <div>
+                <label for="storeLoc">Store Location</label> <br>
+                <input type="text" pInputText id="storeLoc" placeholder="Enter Location" [(ngModel)]="stockData.storeloc"/>
+            </div>
+            <div>
+                <label for="remarks" >Remarks</label> <br>
+                <input type="text" pInputText id="remarks" placeholder="Enter Remarks" [(ngModel)]="stockData.Remarks"/>
+            </div>
+            <div class="form-field-buttons">
+                <p-button label="Submit" [outlined]="true" severity="success" styleClass="p-button-success" (onClick)="saveStocks()"></p-button>
+                <p-button label="Cancel" [outlined]="true" severity="danger" styleClass="p-button-danger" (click)="resetStockData()"></p-button>
+            </div>
+        </div>
+    </p-card>
+</section>
+
+<!-- avalible stocks -->
+
+<div class="avalible-stocks">
+    <p-card *ngFor="let stock of avalileStocks">
+        <table>
+            <tr>
+                <th>Stock Qty</th>
+                <td>{{ stock.StockQty }}</td>
+            </tr>
+            <tr>
+                <th>Item No</th>
+                <td>{{ stock.Item_no }}</td>
+            </tr>
+            <tr>
+                <th>Store Location</th>
+                <td>{{ stock.storeloc }}</td>
+            </tr>
+            <tr>
+                <th>Part Description</th>
+                <td>{{ stock.Item_desc1 }}</td>
+            </tr>
+            <tr>
+                <th>McNo</th>
+                <td>{{ stock.Mcno }}</td>
+            </tr>
+            <tr>
+                <th>Remarks</th>
+                <td>{{ stock.Remarks }}</td>
+            </tr>
+        </table>
+    </p-card>
+</div>
+
+<!-- dialog -->
+<p-dialog header="Warning" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="dialog-content">
+        <span class="p-text-secondary block mb-5">Selcted Stock Item or Part Description is Already avalible.</span> <br>
+        <span class="p-text-secondary block mb-5">Are you sure want to continue?.</span>
+    </div>
+    
+    <div class="dialog-actions">
+        <p-button label="No" severity="secondary" (onClick)="toggleDialog(false)" />
+        <p-button label="Yes" (onClick)="toggleDialog(true)" />
+    </div>
+</p-dialog>
+
+<!-- 192.168.1.44:9003 -->

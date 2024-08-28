@@ -1,5 +1,3 @@
-
-
 export interface IGenvaluejs {
     Itemid: string;
     Item_desc1: String;
@@ -39,6 +37,7 @@ export interface IStockData {
     User: String;
     StockDAte: String;
     Remarks: String;
+    Item_no: String;
 }
 
 export interface IStocks {

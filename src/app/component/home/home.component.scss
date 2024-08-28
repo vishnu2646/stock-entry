@@ -1,0 +1,139 @@
+
+:host ::ng-deep {
+    p-card {
+        display: block;
+        width: 80%;
+        margin: 0 auto;
+
+        .form-fields {
+            p-floatLabel {
+                width: 270px;
+
+                input {
+                    width: 100%;
+                }
+            }
+
+            .form-field-buttons {
+                width: 100%;
+            }
+        }
+    }
+
+    .avalible-stocks {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        
+        > * {
+            margin-bottom: 20px;
+        }
+
+        p-card {
+            .card-body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+        }
+    }
+
+    p-dialog {
+        .dialog-content {
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+
+            > * {
+                margin-bottom: 10px;
+            }
+
+            span:first-child {
+                font-weight: bolder;
+                font-size: 20px;
+            }
+
+            span:nth-child(2) {
+                font-size: 16px;
+            }
+        }
+
+        .dialog-actions{
+            display: flex;
+            justify-content: space-between;
+
+            p-button {
+                button {
+                    width: 80px;
+                }
+            }
+        }
+    }
+
+}
+
+.stock-entry-section {
+    width: 100%;
+    margin: 20px 0;
+
+    .stock-entry-header{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding-left: 3.25rem;
+        padding-right: 3.25rem;
+
+        .title {
+            cursor: pointer;
+        }
+    }
+
+    .form-fields {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+
+        > * {
+            margin-bottom: 30px;
+        }
+    
+        .calender-field {
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .form-field-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+    }
+}
+
+.table-responsive {
+    padding: 2.25rem;
+}
+
+::ng-deep.table-header {
+    @media (max-width: 460px) {
+        > div:nth-child(2) {
+            margin-top: 10px;
+            width: 100%;
+
+            input {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.avalible-stocks {
+    display: flex;
+    flex-wrap: wrap;
+}

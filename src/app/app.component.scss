@@ -1,80 +1,16 @@
-
-:host ::ng-deep {
-
-    p-card {
-        display: block;
-        width: 80%;
-        margin: 0 auto;
-
-        .form-fields {
-            p-floatLabel {
-                width: 270px;
-
-                input {
-                    width: 100%;
-                }
-            }
-
-            .form-field-buttons {
-                width: 100%;
-            }
-        }
-    }
-
-    p-table {
-        table {
-            tbody {
-                tr {
-                    td {
-                        max-width: 200px; 
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        text-align: center;
-                    }
-                }
-            }
-        }
-    }
-}
-
 .nav {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     height: 60px;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
 
     h4 {
         font-size: calc(1.375rem + 1.5vw);
     }
-}
 
-.stock-entry-section {
-    width: 100%;
-    margin: 20px 0;
-
-
-    .form-fields {
+    .links {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-
-        > * {
-            margin-bottom: 30px;
-        }
-    
-        .calender-field {
-            display: flex;
-            flex-direction: column;
-        }
-    
-        .form-field-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
+        gap: 10px;
     }
 }

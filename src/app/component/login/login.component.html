@@ -1,0 +1,25 @@
+
+<div class="login-wrapper">
+    <h1>Login</h1>
+    <div class="form">
+        <div class="row">
+            <label for="username">Username</label>
+            <input type="text" pInputText name="username" autocomplete="off" [(ngModel)]="loginDetails.username"  placeholder="Enter username">
+        </div>
+        <div class="row">
+            <label for="key">Key</label>
+            <p-dropdown 
+                [options]="keys" 
+                [(ngModel)]="selectedKey" 
+                optionLabel="key"
+                placeholder="Select Key" 
+            />
+            {{loginDetails.key}}
+        </div>
+        <div class="row">
+            <label for="password">Password</label>
+            <input type="password" pInputText name="password" [(ngModel)]="loginDetails.password"  placeholder="Enter Password">
+        </div>
+        <button type="submit" (click)="handleLogin()">Login</button>
+    </div>
+</div>

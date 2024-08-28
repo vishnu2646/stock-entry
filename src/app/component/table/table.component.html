@@ -1,0 +1,112 @@
+<div class="table-responsive">
+    <div class="backIcon" (click)="navigateBack()">
+        <i class="pi pi-angle-left"></i>
+    </div>
+    <h3 class="poppins-semibold">Stock Details</h3>
+    <p-table
+        styleClass="p-datatable-sm p-datatable-gridlines poppins-light" 
+        [value]="displayData"
+        dataKey="Itemid"
+        [resizableColumns]="true"
+        columnResizeMode="expand"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        [loading]="loading"
+        [exportHeader]="'customExportHeader'"
+        [globalFilterFields]="['Item_no', 'Item_desc1', 'Mcno', 'StockQty', 'StoreLoc', 'Remarks']"
+        #dt2
+        [tableStyle]="{ 'min-width': '50rem' }"
+    >
+        <ng-template pTemplate="caption">
+            <div class="table-header">
+                <div>
+                    <p-button 
+                        icon="pi pi-external-link" 
+                        label="Export"
+                        (onClick)="exportData()"
+                    />
+                </div>
+                <div>
+                    <p-iconField iconPosition="left" class="ml-auto">
+                        <p-inputIcon>
+                            <i class="pi pi-search"></i>
+                        </p-inputIcon>
+                        <input 
+                            pInputText 
+                            type="text" 
+                            (input)="dt2.filterGlobal($any($event).target.value, 'contains')" 
+                            placeholder="Search keyword" 
+                            class="poppins-medium"
+                        />
+                    </p-iconField>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="poppins-bold" pSortableColumn="Item_no">
+                    Item No
+                    <p-sortIcon field="Item_no" />
+                </th>
+                <th class="poppins-bold" pSortableColumn="Item_desc1" >
+                    Part Desc
+                    <p-sortIcon field="Item_desc1" />
+                </th>
+                <th class="poppins-bold" pSortableColumn="Mcno" >
+                    Mcno
+                    <p-sortIcon field="Mcno" />
+                </th>
+                <th class="poppins-bold" pSortableColumn="storeloc" >
+                    Store Location
+                    <p-sortIcon field="storeloc" />
+                </th>
+                <th class="poppins-bold" pSortableColumn="StockQty" >
+                    Stock Quantity
+                    <p-sortIcon field="StockQty" />
+                </th>
+                <th class="poppins-bold" pSortableColumn="Remarks" >
+                    Remarks
+                    <p-sortIcon field="Remarks" />
+                </th>
+                <th class="poppins-bold">Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-index="rowIndex">
+            <tr>
+                <td>
+                    {{item.Item_no}}
+                </td>
+                <td>
+                    {{item.Item_desc1}}
+                </td>
+                <td>
+                    {{item.Mcno}}
+                </td>
+                <td>
+                    {{item.storeloc }}    
+                </td>
+                <td>
+                    {{item.StockQty}}
+                </td>
+                <td class="text-truncate">
+                    {{item.Remarks}}
+                </td>
+                <td>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button
+                            pButton 
+                            pRipple 
+                            type="button" 
+                            severity="danger"
+                            icon="pi pi-trash"
+                            class="p-button-rounded p-button-text"
+                            (click)="onRowDelete(item)"
+                        >
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

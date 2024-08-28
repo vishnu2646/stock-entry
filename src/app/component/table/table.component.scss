@@ -1,0 +1,63 @@
+::ng-deep.table-header {
+    @media (max-width: 460px) {
+        > div:nth-child(2) {
+            margin-top: 10px;
+            width: 100%;
+
+            input {
+                width: 100%;
+            }
+        }
+    }
+}
+
+:host ::ng-deep {
+    p-table {
+        table {
+            tbody {
+                tr {
+                    td {
+                        max-width: 300px; 
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+  
+        .table-header {
+            display: flex; 
+            justify-content: space-between; 
+            flex-wrap: wrap;
+            align-items: center;
+        }
+    }
+}
+
+
+.table-responsive {
+    padding: 2.25rem;
+
+    h3 {
+        text-align: center;
+    }
+
+    .backIcon {
+        background-color: black;
+        color: white;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        i {
+            font-size: 1.5rem;
+        }
+    }
+}

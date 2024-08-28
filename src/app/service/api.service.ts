@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ export class ApiService {
     /**
      * Base URL for the server.
      */
-    public baseUrl = "http://192.168.1.44:9003";
+    public baseUrl = environment.domain
 
     public userName = '';
 
@@ -66,7 +67,7 @@ export class ApiService {
     public isLoggedIn(): boolean {
         const user = localStorage.getItem('user');
         if(user) {
-            this.userName = JSON.parse(user).userName;
+            this.userName = JSON.parse(user).username;
             this.key = JSON.parse(user).dataBaseKey;
         }
         return !!localStorage.getItem('user');
